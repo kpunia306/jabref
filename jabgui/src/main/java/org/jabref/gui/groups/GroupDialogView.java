@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.SequencedSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javafx.application.Platform;
@@ -322,17 +323,25 @@ public class GroupDialogView extends BaseDialog<AbstractGroup> {
         popOver.show(iconPickerButton);
     }
 
-    private record GroupIconPickerItem(JabRefIcon icon, String persistedIdentifier, String searchText) {
-        private GroupIconPickerItem {
+    record GroupIconPickerItem(JabRefIcon icon, String persistedIdentifier, String searchText) {
+        GroupIconPickerItem {
             searchText = searchText.toLowerCase(Locale.ENGLISH);
         }
     }
 
-    private static final class GroupIconPickerItems {
-        private static final List<GroupIconPickerItem> ALL = load();
+    static final class GroupIconPickerItems {
+        static final List<GroupIconPickerItem> ALL = load();
 
         private static List<GroupIconPickerItem> load() {
+            Set<IconTheme.JabRefIcons> excludedIcons = Set.of(
+                    IconTheme.JabRefIcons.RANK1,
+                    IconTheme.JabRefIcons.RANK2,
+                    IconTheme.JabRefIcons.RANK3,
+                    IconTheme.JabRefIcons.RANK4,
+                    IconTheme.JabRefIcons.RANK5);
+
             SequencedSet<GroupIconPickerItem> pickerItems = Arrays.stream(IconTheme.JabRefIcons.values())
+                                                                  .filter(ikon -> !excludedIcons.contains(ikon))
                                                                   .map(ikon -> new GroupIconPickerItem(
                                                                           ikon,
                                                                           ikon.name(),

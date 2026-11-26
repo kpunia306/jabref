@@ -15,6 +15,8 @@ Note that this project **does not** adhere to [Semantic Versioning](https://semv
 
 ### Fixed
 
+- We fixed overlapping composite star rating icons in the group icon picker. [#17949](https://github.com/JabRef/jabref/issues/17949)
+
 ### Removed
 
 ## [6.0-beta.2] - 2026-11-24
